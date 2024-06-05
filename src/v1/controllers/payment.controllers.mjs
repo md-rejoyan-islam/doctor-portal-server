@@ -6,6 +6,11 @@ import Stripe from "stripe";
 import paymentModel from "../../models/payment.model.mjs";
 const stripe = Stripe(strip_secret_key);
 import createError from "http-errors";
+import {
+  createPaymentIntentService,
+  createPaymentService,
+  getAllPaymentsService,
+} from "../services/payment.service.mjs";
 
 /**
  *
@@ -25,15 +30,13 @@ import createError from "http-errors";
  */
 
 export const createPaymentIntent = asyncHandler(async (req, res) => {
-  const booking = req.body;
-  const price = booking.price;
+  const {
+    booking: { price },
+  } = req.body;
+
   const amount = price * 100;
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    currency: "usd",
-    amount: amount,
-    payment_method_types: ["card"],
-  });
+  const paymentIntent = await createPaymentIntentService(amount);
 
   successResponse(res, {
     statusCode: 200,
@@ -63,37 +66,14 @@ export const createPaymentIntent = asyncHandler(async (req, res) => {
  *
  */
 export const createPayment = asyncHandler(async (req, res) => {
-  const { price, transactionId, bookingId, email } = req.body;
-
-  if (!price || !transactionId || !bookingId || !email) {
-    throw createError(400, "Please provide all the required fields");
-  }
-
-  const result = await paymentModel.create(req.body);
-
-  const updatedDoc = {
-    $set: {
-      paid: true,
-      transactionId: transactionId,
-    },
-  };
-  const updatedResult = await bookingModel.updateOne(
-    {
-      _id: bookingId,
-    },
-    updatedDoc,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const result = await createPaymentService(req.body);
 
   // response
   successResponse(res, {
     statusCode: 200,
     message: "Payment created successfully",
     payload: {
-      data: updatedResult,
+      data: result,
     },
   });
 });
@@ -115,16 +95,18 @@ export const createPayment = asyncHandler(async (req, res) => {
  * @apiError          ( Not Found 404 )  No payments found
  */
 export const getAllPayments = asyncHandler(async (req, res) => {
-  const { email } = req.query;
+  const searchFields = ["price", "transactionId", "bookingId", "email"];
 
-  const payments = await paymentModel.find({ email });
-
-  if (!payments.length) throw createError(404, "No payments found");
+  const { payments, pagination } = await getAllPaymentsService(
+    req,
+    searchFields
+  );
 
   successResponse(res, {
     statusCode: 200,
     message: "All payments",
     payload: {
+      pagination,
       data: payments,
     },
   });
