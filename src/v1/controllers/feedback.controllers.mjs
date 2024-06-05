@@ -3,6 +3,12 @@ import feedbackModel from "../../models/feedback.model.mjs";
 import { successResponse } from "../../helper/responseHandler.mjs";
 import checkMongoID from "../../helper/checkMongoId.mjs";
 import createError from "http-errors";
+import {
+  createFeedbackService,
+  deleteFeedbackServiceById,
+  getAllFeedbacksService,
+  getFeedbackByIdService,
+} from "../services/feedback.service.mjs";
 
 /**
  *
@@ -21,23 +27,18 @@ import createError from "http-errors";
  * @apiError       ( Not Found 404 )  Could not find any feedbacks.
  */
 export const getAllFeedbacks = asyncHandler(async (req, res) => {
-  const email = req.query.email;
+  const searchFields = ["name", "email", "message"];
 
-  let feedbacks;
-  if (email) {
-    feedbacks = await feedbackModel.find({ email }).lean();
-  } else {
-    feedbacks = await feedbackModel.find().lean();
-  }
-
-  if (!feedbacks.length) {
-    throw createError(404, "Could not find any feedbacks.");
-  }
+  const { feedbacks, pagination } = await getAllFeedbacksService(
+    req,
+    searchFields
+  );
 
   successResponse(res, {
     statusCode: 200,
     message: "Feedback data fetched successfully",
     payload: {
+      pagination,
       data: feedbacks,
     },
   });
@@ -57,13 +58,7 @@ export const getAllFeedbacks = asyncHandler(async (req, res) => {
  * @apiError          ( Not Found 404 )   Could not find any feedback.
  */
 export const getFeedbackById = asyncHandler(async (req, res) => {
-  checkMongoID(req.params.id);
-
-  const feedback = await feedbackModel.findById(req.params.id).lean();
-
-  if (!feedback) {
-    throw createError(404, "Could not find any feedback.");
-  }
+  const feedback = await getFeedbackByIdService(req.params.id);
 
   successResponse(res, {
     statusCode: 200,
@@ -88,13 +83,7 @@ export const getFeedbackById = asyncHandler(async (req, res) => {
  * @apiError          ( Bad Request 400 )   Please provide all the required fields
  */
 export const createFeedback = asyncHandler(async (req, res) => {
-  const { name, email, message } = req.body;
-
-  if (!name || !email || !message) {
-    throw createError(400, "Please provide all the required fields");
-  }
-
-  const feedback = await feedbackModel.create(req.body);
+  const feedback = await createFeedbackService(req.body);
 
   successResponse(res, {
     statusCode: 201,
@@ -121,13 +110,7 @@ export const createFeedback = asyncHandler(async (req, res) => {
  *
  */
 export const deleteFeedbackById = asyncHandler(async (req, res) => {
-  checkMongoID(req.params.id);
-
-  const feedback = await feedbackModel.findByIdAndDelete(req.params.id);
-
-  if (!feedback) {
-    throw createError(404, "Could not find any feedback.");
-  }
+  const feedback = await deleteFeedbackServiceById(req.params.id);
 
   successResponse(res, {
     statusCode: 200,
