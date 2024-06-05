@@ -40,7 +40,6 @@ const bookingSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    patientName: {},
     status: {
       type: String,
       enum: ["pending", "approved", "cancelled"],
