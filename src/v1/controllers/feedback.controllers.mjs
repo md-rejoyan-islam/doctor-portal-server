@@ -6,7 +6,14 @@ import createError from "http-errors";
 
 // get all feedbacks
 export const getAllFeedbacks = asyncHandler(async (req, res) => {
-  const feedbacks = await feedbackModel.find().lean();
+  const email = req.query.email;
+
+  let feedbacks;
+  if (email) {
+    feedbacks = await feedbackModel.find({ email }).lean();
+  } else {
+    feedbacks = await feedbackModel.find().lean();
+  }
 
   if (!feedbacks.length) {
     throw createError(404, "Could not find any feedbacks.");

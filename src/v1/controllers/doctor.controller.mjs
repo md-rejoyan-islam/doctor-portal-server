@@ -26,7 +26,7 @@ export const getAllDoctors = asyncHandler(async (req, res) => {
 
 // create doctor
 export const createDoctor = asyncHandler(async (req, res) => {
-  const { name, email, specialty } = req.body;
+  const { name, email, specialty, degree } = req.body;
 
   // existing doctor check
   const doctor = await doctorModel.exists({ email });
@@ -34,7 +34,7 @@ export const createDoctor = asyncHandler(async (req, res) => {
     throw createError(400, "Doctor already exists.");
   }
 
-  if (!name || !email || !specialty) {
+  if (!name || !email || !specialty || !degree) {
     throw createError(400, "Please provide all required fields.");
   }
 
@@ -44,6 +44,10 @@ export const createDoctor = asyncHandler(async (req, res) => {
   }
 
   const photoUrl = await doctorUploadToCloud(photo);
+
+  if (!photoUrl) {
+    throw createError(500, "Could not upload image to cloudinary.");
+  }
 
   const result = await doctorModel.create({
     ...req.body,

@@ -29,6 +29,11 @@ const doctorSchema = mongoose.Schema(
       required: [true, "Please provide your specialty"],
       trim: true,
     },
+    degree: {
+      type: String,
+      required: [true, "Please provide your degree"],
+      trim: true,
+    },
     photo: {
       type: String,
       required: true,

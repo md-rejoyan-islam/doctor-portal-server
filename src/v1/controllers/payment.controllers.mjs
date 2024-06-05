@@ -4,9 +4,8 @@ import bookingModel from "../../models/booking.model.mjs";
 import { strip_secret_key } from "../../app/secret.mjs";
 import Stripe from "stripe";
 import paymentModel from "../../models/payment.model.mjs";
-const stripe = Stripe(
-  "sk_test_51OKltMHHEHd8JSMRCOctaxqYMhERgUEguV6dH1stuln04V5LBglRk7SKFVtlynl6P8uFoZbMcbESiJbkiDZRrHik00UTOXERUb"
-);
+const stripe = Stripe(strip_secret_key);
+import createError from "http-errors";
 
 // create payment intent
 
@@ -65,6 +64,23 @@ export const createPayment = asyncHandler(async (req, res) => {
     message: "Payment created successfully",
     payload: {
       data: updatedResult,
+    },
+  });
+});
+
+// get all payments
+export const getAllPayments = asyncHandler(async (req, res) => {
+  const { email } = req.query;
+
+  const payments = await paymentModel.find({ email });
+
+  if (!payments.length) throw createError(404, "No payments found");
+
+  successResponse(res, {
+    statusCode: 200,
+    message: "All payments",
+    payload: {
+      data: payments,
     },
   });
 });

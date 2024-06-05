@@ -17,6 +17,7 @@ import {
   getAllUsers,
   makeAdminById,
   resetPassword,
+  roleChange,
   unbanUserById,
   updatePasswordById,
   updateUserById,
@@ -76,6 +77,12 @@ const moduleRoutes = [
     method: "patch",
     middleware: [isLoggedIn, authorization("admin")],
     route: makeAdminById,
+  },
+  {
+    path: "/role-change/:id([0-9a-fA-F]{24})",
+    method: "patch",
+    middleware: [isLoggedIn, authorization("admin")],
+    route: roleChange,
   },
   {
     path: "/reset-password",

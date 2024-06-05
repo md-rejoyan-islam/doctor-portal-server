@@ -85,6 +85,38 @@ export const makeAdminById = asyncHandler(async (req, res) => {
   });
 });
 
+// change role
+export const roleChange = asyncHandler(async (req, res) => {
+  // id validation
+  checkMongoID(req.params.id);
+
+  // update user
+  const updatedUser = await userModel.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        role: req.body.role,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!updatedUser) {
+    throw createError(404, "Could not find any user.");
+  }
+  // response
+  successResponse(res, {
+    statusCode: 200,
+    message: "User role changed successfully",
+    payload: {
+      data: updatedUser,
+    },
+  });
+});
+
 /**
  *
  * @apiDescription    Find User By ID

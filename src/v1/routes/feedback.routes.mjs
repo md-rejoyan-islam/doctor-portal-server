@@ -10,10 +10,7 @@ import { authorization } from "../../middlewares/authorization.mjs";
 
 const feedbackRouter = express.Router();
 
-feedbackRouter
-  .route("/")
-  .get(isLoggedIn, authorization("admin"), getAllFeedbacks)
-  .post(createFeedback);
+feedbackRouter.route("/").get(isLoggedIn, getAllFeedbacks).post(createFeedback);
 
 feedbackRouter
   .route("/:id([0-9a-fA-F]{24})")
