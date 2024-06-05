@@ -1,8 +1,12 @@
 import express from "express";
-import { seedsAppoinments } from "../controllers/seeds.controllers.mjs";
+import {
+  seedsAppoinments,
+  seedsDoctors,
+} from "../controllers/seeds.controllers.mjs";
 
 const seedRouter = express.Router();
 
-seedRouter.route("/appointment").get(seedsAppoinments);
+seedRouter.route("/appointments").get(seedsAppoinments);
+seedRouter.route("/doctors").get(seedsDoctors);
 
 export default seedRouter;
