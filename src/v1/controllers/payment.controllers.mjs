@@ -1,11 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { successResponse } from "../../helper/responseHandler.mjs";
-import bookingModel from "../../models/booking.model.mjs";
-import { strip_secret_key } from "../../app/secret.mjs";
-import Stripe from "stripe";
-import paymentModel from "../../models/payment.model.mjs";
-const stripe = Stripe(strip_secret_key);
-import createError from "http-errors";
+
 import {
   createPaymentIntentService,
   createPaymentService,

@@ -1,3 +1,7 @@
+import Stripe from "stripe";
+import { strip_secret_key } from "../../app/secret.mjs";
+const stripe = Stripe(strip_secret_key);
+
 import bookingModel from "../../models/booking.model.mjs";
 import filterQuery from "../../utils/filterQuery.mjs";
 import pagination from "../../utils/pagination.mjs";
