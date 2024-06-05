@@ -7,7 +7,22 @@ import paymentModel from "../../models/payment.model.mjs";
 const stripe = Stripe(strip_secret_key);
 import createError from "http-errors";
 
-// create payment intent
+/**
+ *
+ * @description       Create payment intent
+ * @apiMethod         POST
+ *
+ * @apiRoute          /api/v1/payments/create-payment-intent
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiBody           { price }
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Bad Request 400 )   Please provide all required fields.
+ */
 
 export const createPaymentIntent = asyncHandler(async (req, res) => {
   const booking = req.body;
@@ -31,7 +46,22 @@ export const createPaymentIntent = asyncHandler(async (req, res) => {
   });
 });
 
-// create payment
+/**
+ * @description       Create payment
+ * @apiMethod         POST
+ *
+ * @apiRoute          /api/v1/payments
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiBody           { price, transactionId, bookingId, email }
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Bad Request 400 )   Please provide all the required fields
+ *
+ */
 export const createPayment = asyncHandler(async (req, res) => {
   const { price, transactionId, bookingId, email } = req.body;
 
@@ -68,7 +98,22 @@ export const createPayment = asyncHandler(async (req, res) => {
   });
 });
 
-// get all payments
+/**
+ *
+ * @description       Get all payments
+ * @apiMethod         GET
+ *
+ * @apiRoute          /api/v1/payments
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiQuery          { email }
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Not Found 404 )  No payments found
+ */
 export const getAllPayments = asyncHandler(async (req, res) => {
   const { email } = req.query;
 
