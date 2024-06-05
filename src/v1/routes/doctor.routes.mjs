@@ -3,6 +3,8 @@ import {
   createDoctor,
   deleteDoctorById,
   getAllDoctors,
+  getDoctorById,
+  updateDoctorById,
 } from "../controllers/doctor.controller.mjs";
 import { isLoggedIn } from "../../middlewares/verify.mjs";
 import { authorization } from "../../middlewares/authorization.mjs";
@@ -15,11 +17,10 @@ doctorRouter
   .get(getAllDoctors)
   .post(isLoggedIn, authorization("admin"), doctorPhotoUpload, createDoctor);
 
-doctorRouter.delete(
-  "/:id([0-9a-fA-F]{24})",
-  isLoggedIn,
-  authorization("admin"),
-  deleteDoctorById
-);
+doctorRouter
+  .route("/:id([0-9a-fA-F]{24})")
+  .get(getDoctorById)
+  .patch(isLoggedIn, authorization("admin"), updateDoctorById)
+  .delete(isLoggedIn, authorization("admin"), deleteDoctorById);
 
 export default doctorRouter;
