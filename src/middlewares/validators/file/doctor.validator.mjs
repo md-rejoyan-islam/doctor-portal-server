@@ -18,8 +18,12 @@ export const doctorCreateValidator = [
   body("photo")
     .notEmpty()
     .withMessage("Photo is required")
-    .isURL()
-    .withMessage("Invalid photo url"),
+    .custom((_, { req }) => {
+      if (!req.file) {
+        throw createError(400, "Please provide a photo.");
+      }
+      return true;
+    }),
   body("specialty")
     .notEmpty()
     .withMessage("Specialty is required")
