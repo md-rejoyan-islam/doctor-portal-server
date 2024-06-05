@@ -9,15 +9,15 @@ export const seedsAppoinments = asyncHandler(async (req, res, next) => {
   await appointmentModel.deleteMany({});
 
   // insert seeds data
-  const tags = await appointmentModel.create(appointmentData);
+  const appointments = await appointmentModel.create(appointmentData);
 
   // response with success message
   successResponse(res, {
     statusCode: 200,
     message: "Seeds appointment data added successfully.",
     payload: {
-      totalTags: tags.length,
-      data: tags,
+      total: appointments.length,
+      data: appointments,
     },
   });
 });

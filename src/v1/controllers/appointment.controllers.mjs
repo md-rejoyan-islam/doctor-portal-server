@@ -1,8 +1,40 @@
 import asyncHandler from "express-async-handler";
 import { successResponse } from "../../helper/responseHandler.mjs";
-import { getAllAppointmentsService } from "../services/appointment.service.mjs";
-import appointmentModel from "../../models/appointment.model.mjs";
-import bookingModel from "../../models/booking.model.mjs";
+import {
+  createAppointmentService,
+  deleteAppointmentServiceById,
+  getAllAppointmentsService,
+  getAppointmentByIdService,
+  updateAppointmentServiceById,
+} from "../services/appointment.service.mjs";
+
+/**
+ *
+ * @description       Create appointment
+ * @apiMethod         POST
+ *
+ * @apiRoute          /api/v1/appointments
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiBody           { name, price, slots}
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ *
+ */
+export const createAppointment = asyncHandler(async (req, res) => {
+  const appointment = await createAppointmentService(req);
+
+  successResponse(res, {
+    statusCode: 201,
+    message: "Appointment created successfully",
+    payload: {
+      data: appointment,
+    },
+  });
+});
 
 /**
  *
@@ -19,7 +51,7 @@ import bookingModel from "../../models/booking.model.mjs";
  *
  * @apiSuccess        { success : true , message, pagination , data }
  * @apiFailed         { success : false, error : { status : code , message} }
- * @apiError          ( Not Found 404 )  No Appointment data found
+ * @apiError          ( Not Found 404 )  Could not find any appointment.
  *
  */
 
@@ -31,80 +63,106 @@ export const getAllAppointments = asyncHandler(async (req, res) => {
   req.query.page = Number(req.query.page) || 1;
   req.query.limit = Number(req.query.limit) || 10;
 
-  const result = await appointmentModel.aggregate([
-    {
-      $lookup: {
-        from: "bookings",
-        localField: "name",
-        foreignField: "treatment",
-        as: "bookedAppointments",
-        pipeline: [
-          {
-            $match: {
-              appointmentDate: {
-                $eq: req.query.date,
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      $addFields: {
-        bookedSlots: "$bookedAppointments.slot",
-      },
-    },
-    {
-      $project: {
-        bookedAppointments: 0,
-      },
-    },
-    {
-      $project: {
-        name: 1,
-        price: 1,
-        slots: {
-          $setDifference: ["$slots", "$bookedSlots"],
-        },
-        // bookedSlots: 1,
-      },
-    },
-  ]);
-
-  // console.log(result);
+  const { appointments, pagination } = await getAllAppointmentsService(
+    req,
+    searchFields
+  );
 
   // response
   return successResponse(res, {
     statusCode: 200,
     message: "Appointdata data fetched successfully",
     payload: {
-      //   pagination,
-      //   data: appointments,
-      data: result,
+      pagination,
+      data: appointments,
     },
   });
 });
 
-// update appointment
+/**
+ *
+ * @description       Get appointment by id
+ * @apiMethod         GET
+ *
+ * @apiRoute          /api/v1/appointments/:id
+ * @apiAccess         Public
+ *
+ * @apiParams         id
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Not Found 404 )  Could not find any appointment.
+ *
+ */
 
-export const updateAppointment = asyncHandler(async (req, res) => {
-  const result = await appointmentModel.updateMany(
-    {},
-    {
-      $set: {
-        price: 999,
-      },
+export const getAppointmentById = asyncHandler(async (req, res) => {
+  const appointment = await getAppointmentByIdService(req.params.id);
+  successResponse(res, {
+    statusCode: 200,
+    message: "Appointment data fetched successfully",
+    payload: {
+      data: appointment,
     },
-    {
-      upsert: true,
-    }
+  });
+});
+
+/**
+ *
+ * @description       Delete appointment by id
+ * @apiMethod         DELETE
+ *
+ * @apiRoute          /api/v1/appointments/:id
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiParams         id
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Not Found 404 )  Could not find any appointment.
+ *
+ */
+export const deleteAppointmentById = asyncHandler(async (req, res) => {
+  const appointment = await deleteAppointmentServiceById(req.params.id);
+
+  successResponse(res, {
+    statusCode: 200,
+    message: "Appointment deleted successfully",
+    payload: {
+      data: appointment,
+    },
+  });
+});
+
+/**
+ *
+ * @description       Update appointment by id
+ * @apiMethod         PATCH
+ *
+ * @apiRoute          /api/v1/appointments/:id
+ * @apiAccess         Private
+ *
+ * @apiCookie         { accessToken }
+ *
+ * @apiParams         id
+ * @apiBody           { name, price, slots}
+ *
+ * @apiSuccess        { success : true , message , data }
+ * @apiFailed         { success : false, error : { status : code , message} }
+ * @apiError          ( Not Found 404 )  Could not find any appointment.
+ */
+export const updateAppointmentById = asyncHandler(async (req, res) => {
+  const appointment = await updateAppointmentServiceById(
+    req.params.id,
+    req.body
   );
 
   successResponse(res, {
     statusCode: 200,
     message: "Appointment updated successfully",
     payload: {
-      data: result,
+      data: appointment,
     },
   });
 });
