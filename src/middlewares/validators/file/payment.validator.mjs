@@ -6,7 +6,8 @@ export const paymentIntentCreateValidator = [
   body("booking")
     .notEmpty()
     .withMessage("Booking is required")
-    .isObject.withMessage("Booking is required"),
+    .isObject()
+    .withMessage("Booking is required"),
   body("booking.price")
     .notEmpty()
     .withMessage("Price is required")

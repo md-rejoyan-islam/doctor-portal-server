@@ -1,6 +1,7 @@
 import feedbackModel from "../../models/feedback.model.mjs";
 import filterQuery from "../../utils/filterQuery.mjs";
 import pagination from "../../utils/pagination.mjs";
+import createError from "http-errors";
 
 // get all feedbacks service
 export const getAllFeedbacksService = async (req, searchFields) => {
@@ -68,6 +69,5 @@ export const deleteFeedbackServiceById = async (id) => {
   if (!feedback) {
     throw createError(404, "Could not find any feedback.");
   }
-
   return feedback;
 };

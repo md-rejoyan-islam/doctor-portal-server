@@ -2,7 +2,7 @@ import { errorLogger } from "./logger.mjs";
 
 export const errorResponse = (
   res,
-  { statusCode = 500, message = "Unknown Server Error" }
+  { statusCode = 500, message = "Unknown Server Error", errors }
 ) => {
   // log error
   errorLogger.error(message);
@@ -12,6 +12,7 @@ export const errorResponse = (
     error: {
       status: statusCode,
       message,
+      errors,
     },
   });
 };

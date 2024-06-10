@@ -20,10 +20,10 @@ import { isLoggedIn, isLoggedOut } from "../../middlewares/verify.mjs";
 const authRouter = express.Router();
 
 authRouter.route("/register").post(
-  limiter(50), // 5 requests per minute
-  isLoggedOut,
-  userRegisterValidator,
-  runValidation,
+  // limiter(50), // 5 requests per minute
+  // isLoggedOut,
+  // userRegisterValidator,
+  // runValidation,
   userRegister
 );
 

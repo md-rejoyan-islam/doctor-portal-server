@@ -11,12 +11,19 @@ export const bookingCreateValidator = [
   body("appointmentDate")
     .notEmpty()
     .withMessage("Appointment date is required")
-    .isISO8601()
-    .withMessage("Invalid date format"),
+    .isString()
+    .withMessage("Appointment date must be a string")
+    .custom((value) => {
+      const date = new Date(value);
+      if (isNaN(date)) {
+        throw createError(400, "Invalid date format");
+      }
+      return true;
+    }),
   body("selectedDate")
     .notEmpty()
     .withMessage("Selected date is required")
-    .isISO8601()
+    .isDate()
     .withMessage("Invalid date format"),
   body("treatment")
     .notEmpty()

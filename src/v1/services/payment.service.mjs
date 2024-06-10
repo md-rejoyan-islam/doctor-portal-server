@@ -5,6 +5,8 @@ const stripe = Stripe(strip_secret_key);
 import bookingModel from "../../models/booking.model.mjs";
 import filterQuery from "../../utils/filterQuery.mjs";
 import pagination from "../../utils/pagination.mjs";
+import paymentModel from "../../models/payment.model.mjs";
+import createError from "http-errors";
 
 // create payment intent service
 export const createPaymentIntentService = async (amount) => {

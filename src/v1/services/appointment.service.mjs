@@ -84,9 +84,9 @@ export const getAllAppointmentsService = async (req, searchFields) => {
 
 // get appointment by id
 export const getAppointmentByIdService = async (id) => {
-  checkMongoID(id);
+  // checkMongoID(id);
 
-  const appointment = await appointmentModel.findById(req.params.id);
+  const appointment = await appointmentModel.findById(id);
 
   if (!appointment) {
     throw createError(404, "Could not find any appointment.");

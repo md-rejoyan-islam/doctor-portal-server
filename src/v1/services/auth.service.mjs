@@ -72,7 +72,6 @@ export const userLoginService = async (res, data) => {
     throw createError(400, "Wrong password. Please try again.");
   }
 
-
   // create  access token
   const accessToken = await createJWT(
     { email, role: loginUser.role },

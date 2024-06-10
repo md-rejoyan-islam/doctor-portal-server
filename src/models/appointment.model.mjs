@@ -1,7 +1,8 @@
+import { Schema } from "mongoose";
 import mongoose from "mongoose";
 
 // user schema
-const appointmentSchema = mongoose.Schema(
+const appointmentSchema = new Schema(
   {
     name: {
       type: String,
@@ -9,13 +10,15 @@ const appointmentSchema = mongoose.Schema(
       trim: true,
       maxlength: [50, "Name can not be more than 50 characters"],
       minlength: [3, "Name can not be less than 3 characters"],
+      unique: [true, "Name already exists"],
     },
     slots: {
-      type: Array,
+      type: [String],
       default: ["08.00 AM - 08.30 AM"],
     },
     price: {
       type: Number,
+      cast: "{VALUE} is not a number",
       required: [true, "Please provide the price"],
     },
   },

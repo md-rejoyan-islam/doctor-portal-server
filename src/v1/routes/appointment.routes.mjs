@@ -16,18 +16,15 @@ import runValidation from "../../middlewares/validators/validation.mjs";
 
 const appointmentRouter = express.Router();
 
+appointmentRouter.route("/").get(getAllAppointments).post(
+  // isLoggedIn,
+  // authorization("admin"),
+  // appointmentCreateValidator,
+  // runValidation,
+  createAppointment
+);
 appointmentRouter
-  .route("/")
-  .get(getAllAppointments)
-  .post(
-    isLoggedIn,
-    authorization("admin"),
-    appointmentCreateValidator,
-    runValidation,
-    createAppointment
-  );
-appointmentRouter
-  .route("/:id[0-9a-fA-F]{24}")
+  .route("/:id")
   .get(getAppointmentById)
   .put(
     isLoggedIn,
