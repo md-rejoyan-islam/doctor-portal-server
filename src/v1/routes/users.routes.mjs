@@ -1,6 +1,5 @@
 import express from "express";
 import { authorization } from "../../middlewares/authorization.mjs";
-import { userMulter } from "../../middlewares/multer.mjs";
 import {
   userPasswordUpdateValidator,
   userRegisterValidator,
@@ -22,6 +21,7 @@ import {
   updatePasswordById,
   updateUserById,
 } from "../controllers/user.controllers.mjs";
+import { userPhotoUpload } from "../../middlewares/multerForCloudinary.mjs";
 
 const userRouter = express.Router();
 
@@ -112,7 +112,7 @@ const moduleRoutes = [
     method: "patch",
     middleware: [
       isLoggedIn,
-      userMulter,
+      userPhotoUpload,
       authorization("admin", "user", "seller"),
     ],
     route: updateUserById,

@@ -51,4 +51,4 @@ export const doctorMulter = multer({
 export const userMulter = multer({
   storage,
   fileFilter,
-}).single("user_photo");
+}).single("photo");

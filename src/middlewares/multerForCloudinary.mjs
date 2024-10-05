@@ -12,3 +12,4 @@ const storage = multer.diskStorage({
 
 // multer for doctor
 export const doctorPhotoUpload = multer({ storage }).single("photo");
+export const userPhotoUpload = multer({ storage }).single("photo");

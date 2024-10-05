@@ -49,7 +49,7 @@ app.get(
   })
 );
 
-// client error handling
+// client error handling or not found route
 app.use(
   asyncHandler(async () => {
     throw createError.NotFound("Could not find this route.");

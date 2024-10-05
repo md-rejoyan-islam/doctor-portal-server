@@ -5,7 +5,7 @@ import filterQuery from "../../utils/filterQuery.mjs";
 import pagination from "../../utils/pagination.mjs";
 
 // get all doctors
-export const getAllDoctorsService = async (req, secure_url) => {
+export const getAllDoctorsService = async (req, searchFields) => {
   // query filter
   const {
     queries: { skip, limit, fields, sortBy },

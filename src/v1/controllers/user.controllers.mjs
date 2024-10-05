@@ -17,6 +17,7 @@ import {
   updateUserPasswordByIdService,
 } from "../services/user.service.mjs";
 import userModel from "../../models/user.model.mjs";
+import { userUploadToCloud } from "../../middlewares/cloudinaryCloud.mjs";
 
 /**
  *
@@ -177,7 +178,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
   // }
 
   // some data remove from update
-  ["role", "isAdmin", "isBanned", "_id", "createdAt", "updatedAt"].forEach(
+  ["role", "_id", "createdAt", "updatedAt"].forEach(
     (field) => delete req.body[field]
   );
 
@@ -185,16 +186,11 @@ export const updateUserById = asyncHandler(async (req, res) => {
   const options = {
     $set: {
       ...req.body,
-      photo: req.file && req.file.path,
+      photo: req.file && (await userUploadToCloud(req.file.path)),
     },
   };
   // update user
   const updatedUser = await updateUserByIdService(req.params.id, options);
-
-  // delete previous image
-  if (req.file && updatedUser.photo) {
-    deleteImage(updatedUser.photo);
-  }
 
   // response
   successResponse(res, {

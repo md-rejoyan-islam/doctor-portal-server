@@ -9,6 +9,13 @@ export const doctorUploadToCloud = async (file_path) => {
   });
   return data.secure_url;
 };
+export const userUploadToCloud = async (file_path) => {
+  const data = await cloudinary.uploader.upload(file_path, {
+    folder: "doctor-portal/users",
+    use_filename: true,
+  });
+  return data.secure_url;
+};
 
 // delete image from cloudinary
 export const deleteCloudinaryImage = asyncHandler(async (publicId) => {
