@@ -15,6 +15,9 @@ const syslogColors = {
   error: "bold red inverse",
 };
 
+// use tmp when running on AWS Lambda or other serverless platforms
+const logDirectory = "/tmp/logs" || "src/logs";
+
 export const logger = createLogger({
   level: "info",
   format: combine(
@@ -31,7 +34,7 @@ export const logger = createLogger({
   transports: [
     new transports.Console(),
     new DailyRotateFile({
-      filename: "src/logs/success/success-%DATE%.log",
+      filename: `${logDirectory}/success/success-%DATE%.log`,
       datePattern: "YYYY-MM-DD-HH-mm",
       zippedArchive: true,
       maxSize: "20m",
@@ -56,7 +59,7 @@ export const errorLogger = createLogger({
   transports: [
     new transports.Console(),
     new DailyRotateFile({
-      filename: "src/logs/error/error-%DATE%.log",
+      filename: `${logDirectory}/success/success-%DATE%.log`,
       datePattern: "YYYY-MM-DD-HH-mm",
       zippedArchive: true,
       maxSize: "20m",
