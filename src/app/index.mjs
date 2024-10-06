@@ -3,15 +3,13 @@ import cors from "cors";
 import express from "express";
 import asyncHandler from "express-async-handler";
 import createError from "http-errors";
-import morgan from "morgan";
 
 //import routes
 import path from "path";
 import corsOptions from "../config/corsSetup.mjs";
-import { errorHandler } from "../middlewares/errorHandler.mjs";
-import seedRouter from "../v1/routes/seeds.routes.mjs";
-import v1 from "./v1.mjs";
 import { successResponse } from "../helper/responseHandler.mjs";
+import { errorHandler } from "../middlewares/errorHandler.mjs";
+import v1 from "./v1.mjs";
 
 // express app
 const app = express();
@@ -20,6 +18,13 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+import morgan from "morgan";
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
 app.use(morgan("dev"));
 
 // cookie parser
