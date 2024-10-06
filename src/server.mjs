@@ -1,9 +1,7 @@
 import app from "./app/index.mjs";
-import mongoDBConnection from "./config/db.mjs";
 import { hostname, port } from "./app/secret.mjs";
+import mongoDBConnection from "./config/db.mjs";
 import { errorLogger, logger } from "./helper/logger.mjs";
-import { Server } from "http";
-let server = new Server(app);
 
 // app listen
 app.listen(port, () => {
