@@ -16,7 +16,8 @@ const syslogColors = {
 };
 
 // use tmp when running on AWS Lambda or other serverless platforms
-const logDirectory = "/tmp/logs" || "src/logs";
+// const logDirectory = "/tmp/logs" || "src/logs";
+const logDirectory = "src/logs";
 
 export const logger = createLogger({
   level: "info",

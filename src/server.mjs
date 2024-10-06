@@ -1,33 +1,17 @@
 import app from "./app/index.mjs";
 import { hostname, port } from "./app/secret.mjs";
 import mongoDBConnection from "./config/db.mjs";
-import { errorLogger, logger } from "./helper/logger.mjs";
+import { logger } from "./helper/logger.mjs";
 
 // app listen
-app.listen(port, () => {
-  mongoDBConnection();
-  logger.info(
-    `server is running on http://localhost:${port} or http://${hostname}:${port}`
-  );
-});
-
-// error handling for unhandledRejection
-process.on("unhandledRejection", (error) => {
-  if (server) {
-    server.close(() => {
-      // ze gula global error handlle korte pare na
-      errorLogger.error(error);
-      process.exit(1);
-    });
-  } else {
-    process.exit(1);
+app.listen(port, async () => {
+  try {
+    await mongoDBConnection();
+    logger.info(
+      `server is running on http://localhost:${port} or http://${hostname}:${port}`
+    );
+  } catch (err) {
+    logger.error("Failed to connect to MongoDB", err);
+    process.exit(1); // Exit the process if DB connection fails
   }
 });
-// error handling for uncaughtException
-process.on("uncaughtException", (error) => {
-  console.log(22);
-  errorLogger.error(error);
-  process.exit(1);
-});
-
-// err instanceof TypeError
