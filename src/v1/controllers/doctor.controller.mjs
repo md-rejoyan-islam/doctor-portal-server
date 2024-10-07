@@ -1,11 +1,7 @@
 import asyncHandler from "express-async-handler";
-import doctorModel from "../../models/doctor.model.mjs";
 import createError from "http-errors";
+import mongoDBConnection from "../../config/db.mjs";
 import { successResponse } from "../../helper/responseHandler.mjs";
-import {
-  deleteCloudinaryImage,
-  doctorUploadToCloud,
-} from "../../middlewares/cloudinaryCloud.mjs";
 import {
   createDoctorService,
   deleteDoctorServiceById,
@@ -30,6 +26,8 @@ import {
  * @apiError          ( Not Found 404 )  Currently there are no doctors available.
  */
 export const getAllDoctors = asyncHandler(async (req, res) => {
+  await mongoDBConnection();
+
   const searchFields = ["name", "email", "specialty", "degree"];
 
   const { doctors, pagination } = await getAllDoctorsService(req, searchFields);

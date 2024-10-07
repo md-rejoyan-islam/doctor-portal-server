@@ -26,10 +26,6 @@ if (process.env.NODE_ENV === "development") {
 // cookie parser
 app.use(cookieParser());
 
-// database connection
-import mongoDBConnection from "../config/db.mjs";
-mongoDBConnection();
-
 // static folder
 app.use("/public", express.static(path.resolve("public")));
 
