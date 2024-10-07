@@ -4,8 +4,6 @@ import { errorLogger, logger } from "../helper/logger.mjs";
 
 const mongoDBConnection = async (options = {}) => {
   try {
-    if (mongoose.connection.readyState >= 1) return;
-
     const connect = await mongoose.connect(mongoURL, options);
 
     logger.info(`mongoDB connected successfully to ${connect.connection.name}`);
