@@ -19,10 +19,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-import morgan from "morgan";
+// import morgan from "morgan";
 
 if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+  // app.use(import("morgan").then((module) => module.default("dev")));
+
+  import("morgan").then((module) => app.use(module.default("dev")));
+
+  // app.use(morgan("dev"));
 }
 
 // app.use(morgan("dev"));
