@@ -1,11 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "src/loader.cjs",
+  "main": "src/server.mjs",
   "type": "module",
   "scripts": {
-    "start": "node  src/loader.cjs",
-    "dev": "nodemon src/loader.cjs"
+    "start": "node  src/server.mjs",
+    "dev": "nodemon src/server.mjs"
   },
   "keywords": [],
   "author": "",

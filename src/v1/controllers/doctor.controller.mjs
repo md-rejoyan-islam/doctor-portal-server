@@ -1,6 +1,5 @@
 import asyncHandler from "express-async-handler";
 import createError from "http-errors";
-import mongoDBConnection from "../../config/db.mjs";
 import { successResponse } from "../../helper/responseHandler.mjs";
 import {
   createDoctorService,
@@ -26,8 +25,6 @@ import {
  * @apiError          ( Not Found 404 )  Currently there are no doctors available.
  */
 export const getAllDoctors = asyncHandler(async (req, res) => {
-  await mongoDBConnection();
-
   const searchFields = ["name", "email", "specialty", "degree"];
 
   const { doctors, pagination } = await getAllDoctorsService(req, searchFields);
