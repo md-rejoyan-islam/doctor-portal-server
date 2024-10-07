@@ -14,5 +14,11 @@
       "src": "/(.*)",
       "dest": "src/server.mjs"
     }
-  ]
+  ],
+  "functions": {
+    "api/*": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
 }

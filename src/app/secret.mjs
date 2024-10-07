@@ -7,7 +7,7 @@ export const hostname = "127.0.0.1";
 
 export const node_env = process.env.NODE_ENV || "development";
 
-export const mongoURL = process.env.MONGO_URL;
+export const mongoURL = process.env.MONGODB_URI;
 
 export const clinetWhiteList = process.env.CLIENT_WHITE_LIST?.split(",");
 
