@@ -1,12 +1,10 @@
 import app from "./app/index.mjs";
 import { hostname, port } from "./app/secret.mjs";
-import mongoDBConnection from "./config/db.mjs";
 import { logger } from "./helper/logger.mjs";
 
 // app listen
 app.listen(port, async () => {
   try {
-    await mongoDBConnection();
     logger.info(
       `server is running on http://localhost:${port} or http://${hostname}:${port}`
     );
