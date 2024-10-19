@@ -28,5 +28,5 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 
 ### POSTMAN URL
 
-[Server Preview](https://docker-server.up.railway.app)
+[Server Preview](https://doctor-portal-server.up.railway.app)
 [Postman Documentation]()
