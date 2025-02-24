@@ -11,16 +11,15 @@ import {
   refreshTokenSecret,
 } from "../../app/secret.mjs";
 import { clearCookie, setCookie } from "../../helper/cookie.mjs";
+import createJWT from "../../helper/createJWT.mjs";
+import { successResponse } from "../../helper/responseHandler.mjs";
+import userModel from "../../models/user.model.mjs";
 import {
   activeUserAccountService,
   refreshTokenService,
   userLoginService,
   userRegisterService,
 } from "../services/auth.service.mjs";
-import { successResponse } from "../../helper/responseHandler.mjs";
-import data from "../../../data/seeds.appointment.mjs";
-import createJWT from "../../helper/createJWT.mjs";
-import userModel from "../../models/user.model.mjs";
 
 /**
  *
@@ -63,7 +62,8 @@ export const googleLogin = asyncHandler(async (req, res) => {
   let result = await userModel.findOne({ email }).lean();
 
   if (!result) {
-    result = await userModel.create(data);
+    // result = await userModel.create(data);
+    throw createError(404, "User not found");
   }
 
   // create  access token
@@ -95,6 +95,8 @@ export const googleLogin = asyncHandler(async (req, res) => {
     cookieValue: refreshToken,
     maxAge: refreshCookiemaxAge,
   });
+
+  console.log("result", result);
 
   // response send
   successResponse(res, {

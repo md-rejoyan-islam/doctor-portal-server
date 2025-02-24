@@ -1,4 +1,11 @@
 import express from "express";
+import limiter from "../../middlewares/rateLimiter.mjs";
+import {
+  userLoginValidator,
+  userRegisterValidator,
+} from "../../middlewares/validators/file/user.validator.mjs";
+import runValidation from "../../middlewares/validators/validation.mjs";
+import { isLoggedIn, isLoggedOut } from "../../middlewares/verify.mjs";
 import {
   activateUserAccount,
   googleLogin,
@@ -8,22 +15,15 @@ import {
   userLogin,
   userRegister,
 } from "../controllers/auth.controllers.mjs";
-import limiter from "../../middlewares/rateLimiter.mjs";
-import {
-  userLoginValidator,
-  userRegisterValidator,
-} from "../../middlewares/validators/file/user.validator.mjs";
-import runValidation from "../../middlewares/validators/validation.mjs";
-import { isLoggedIn, isLoggedOut } from "../../middlewares/verify.mjs";
 
 //create router
 const authRouter = express.Router();
 
 authRouter.route("/register").post(
-  // limiter(50), // 5 requests per minute
-  // isLoggedOut,
-  // userRegisterValidator,
-  // runValidation,
+  limiter(5), // 5 requests per minute
+  isLoggedOut,
+  userRegisterValidator,
+  runValidation,
   userRegister
 );
 
