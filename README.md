@@ -45,7 +45,7 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 | DELETE | /api/v1/users/:id                    | Delete user by id    | Admin, Authenticated |
 | PATCH  | /api/v1/users/:id                    | Update user by id    | Admin, Authenticated |
 
-### Booking Endpoints
+#### Booking Endpoints
 
 | Method | Endpoint             | Description          | Access               |
 | ------ | -------------------- | -------------------- | -------------------- |
@@ -55,7 +55,7 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 | PATCH  | /api/v1/bookings/:id | Update booking by id | Admin, Authenticated |
 | DELETE | /api/v1/bookings/:id | Delete booking by id | Admin, Authenticated |
 
-### Appointment Endpoints
+#### Appointment Endpoints
 
 | Method | Endpoint                 | Description              | Access               |
 | ------ | ------------------------ | ------------------------ | -------------------- |
@@ -65,7 +65,7 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 | PUT    | /api/v1/appointments/:id | Update appointment by id | Admin, Authenticated |
 | DELETE | /api/v1/appointments/:id | Delete appointment by id | Admin, Authenticated |
 
-### Doctor Endpoints
+#### Doctor Endpoints
 
 | Method | Endpoint            | Description         | Access |
 | ------ | ------------------- | ------------------- | ------ |
@@ -75,7 +75,7 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 | PUT    | /api/v1/doctors/:id | Update doctor by id | Admin  |
 | DELETE | /api/v1/doctors/:id | Delete doctor by id | Admin  |
 
-### Feedback Endpoints
+#### Feedback Endpoints
 
 | Method | Endpoint              | Description           | Access               |
 | ------ | --------------------- | --------------------- | -------------------- |
@@ -84,7 +84,7 @@ This is a server for a doctor's portal. It is a RESTful API that allows doctors 
 | GET    | /api/v1/feedbacks/:id | Get feedback by id    | Admin, Authenticated |
 | DELETE | /api/v1/feedbacks/:id | Delete feedback by id | Admin, Authenticated |
 
-### Payment Endpoints
+#### Payment Endpoints
 
 | Method | Endpoint                              | Description                 | Access               |
 | ------ | ------------------------------------- | --------------------------- | -------------------- |
