@@ -1,9 +1,9 @@
 import asyncHandler from "express-async-handler";
-import fs from "fs";
-fs.promises;
 import checkMongoID from "../../helper/checkMongoId.mjs";
-import { successResponse } from "../../helper/responseHandler.mjs";
 import deleteImage from "../../helper/deleteImage.mjs";
+import { successResponse } from "../../helper/responseHandler.mjs";
+import { userUploadToCloud } from "../../middlewares/cloudinaryCloud.mjs";
+import userModel from "../../models/user.model.mjs";
 import {
   banUserByIdService,
   createUserService,
@@ -16,8 +16,6 @@ import {
   updateUserByIdService,
   updateUserPasswordByIdService,
 } from "../services/user.service.mjs";
-import userModel from "../../models/user.model.mjs";
-import { userUploadToCloud } from "../../middlewares/cloudinaryCloud.mjs";
 
 /**
  *
